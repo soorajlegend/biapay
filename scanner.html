@@ -1,0 +1,49 @@
+<html>
+    <head>
+<script type="text/javascript" src="adapter.min.js"></script>
+<script type="text/javascript" src="vue.min.js"></script>
+<script type="text/javascript" src="instascan.min.js"></script>
+<link rel="stylesheet" href="bootstrap.min.css">
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <video id="preview" width="100%"></video>
+                </div>
+                <div class="col-md-6">
+                    <label>SCAN QR CODE</label>
+                    <input type="text" name="text" id="text" readony="" placeholder="scan qrcode" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <script>
+           let scanner = new Instascan.Scanner({ video: document.getElementById('preview')});
+           Instascan.Camera.getCameras().then(function(cameras){
+               // if(cameras.length > 0 ){
+               //     scanner.start(cameras[1]);
+               // } else{
+               //     alert('No cameras found');
+               // }
+               if (cameras.length > 1) {
+            scanner.start(cameras[1]);
+
+        }
+        else if (cameras.length > 0) {
+            scanner.start(cameras[0]);
+        } else {
+            console.error('No cameras found.');
+        }
+
+           }).catch(function(e) {
+               console.error(e);
+           });
+
+           scanner.addListener('scan',function(c){
+               document.getElementById('text').value=c;
+           });
+
+        </script>
+    </body>
+</html>
