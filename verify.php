@@ -1,4 +1,4 @@
-<?php 
+ <?php 
 include("./dist/include/config.php");
 session_start();
 if ($_SESSION['address'] == ""){
@@ -13,6 +13,14 @@ if ($_SESSION['address'] == ""){
     {
       foreach($results1 as $result)
 {
+	
+
+    if (isset($_POST['send'])) {
+       $amount = $_POST['amount'];
+       $_SESSION['amount'] = "$amount";
+       echo "<script>window.location.replace('verify.php');</script>";
+
+    }
  ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -41,6 +49,8 @@ if ($_SESSION['address'] == ""){
         <!-- bootstrap-daterangepicker -->
         <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!-- JavaScript Bundle with Popper -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
         <!-- Custom Theme Style -->
         <link href="build/css/custom.css" rel="stylesheet">
         <style type="text/css">
@@ -49,7 +59,12 @@ if ($_SESSION['address'] == ""){
         }
 
             .green-bg{
-    background-image: linear-gradient(#00331a, #00b359); 
+    background-image: linear-gradient(#00331a, #00b359);
+    transition: .5s; 
+    color: #fff;
+}
+.green-bg:hover{
+    background-image: linear-gradient(#00b359, #00331a); 
     color: #fff;
 }
 footer{
@@ -68,7 +83,9 @@ body{
 .row{
     margin-left: 20%;
     margin-right: 20px;
-    margin-top: 10%;
+    margin-top: 0%;
+    width: 50%;
+    margin-left: 25%;
 }
 .my-card{
     border: 1.0px solid #ccc;
@@ -78,7 +95,57 @@ body{
     width: 50%;
     margin-top: 20px;
 }
+.transaction-header{
+    color: #00331a;
+    font-weight: 700;
+    font-size: 2vw;
+}
+.name{ 
+    color: #00331a;
+    font-weight: 700;
+    font-size: 2vw;
+}
+.balance sub{ 
+    color: #00331a;
+    font-weight: 700;
+    font-size: 1vw;
+}
+.status{
+    font-size: 2vw;
+    color: red;
+    float: left;
+}
+.password{
+    font-size: 4vw;
+    overflow: auto;
+    padding: 10px;
+    text-transform: none;
+    justify-content: center;
+}
+
+
+
 @media only screen and (max-width: 600px) {
+    .status{
+    font-size: 5vw;
+    color: red;
+    float: left;
+}
+	.transaction-header{
+    color: #00331a;
+    font-weight: 600;
+    font-size: 8vw;
+}
+.name{ 
+    color: #00331a;
+    font-weight: 700;
+    font-size: 7vw;
+}
+.balance sub{ 
+    color: #00331a;
+    font-weight: 700;
+    font-size: 5vw;
+}
     .main-body{
         background-color: white;
         padding: 0px 10px ;
@@ -87,6 +154,7 @@ body{
     .row{
     margin-left: 0;
     margin-right: 0;
+    width: 100%;
 
 }
 .my-card{
@@ -99,6 +167,22 @@ body{
 }
     }
         </style>
+
+        <script type="text/javascript">
+  function check_pin() {
+  $("#loaderIcon").show();
+jQuery.ajax({
+url: "get_address.php",
+data:'pin='+$("#pin").val(),
+type: "POST",
+success:function(data){
+$("#balance_status").html(data);
+$("#loaderIcon").hide();
+},
+error:function (){}
+});
+}
+        </script>
     </head>
 
     <body class="nav-md">
@@ -174,27 +258,77 @@ body{
                     </div>
                     <!-- /Page Header -->
                     
-                    <div align="center" class="row">
-    <div class="my-card">
-      <div class="card-body">
-        <h5 class="card-title">Instant pay</h5>
-        <a href="scanner.php" class="btn green-bg">Transfer</a>
-    </div>
-  </div>
-    <div class="my-card">
-      <div class="card-body">
-        <h5 class="card-title">Get money instantly</h5>
-        <a href="#" class="btn green-bg">Recieve</a>
-      </div>
-    </div>
+                    <div align="center" class="">
+    <?php 
+
+	$raddress=$_SESSION['raddress'];
+ // echo $_SESSION['rname'];
+	// echo $_SESSION['balance'];
+	// echo $_SESSION['email'];
+	// echo $_SESSION['mobile'];
+	$sql2 = "SELECT * FROM users WHERE myAddress='$raddress' ";
+    $query2= $dbh -> prepare($sql2);
+    $query2-> execute();
+    $results2 = $query2 -> fetchAll(PDO::FETCH_OBJ);
+    if($query2 -> rowCount() == 1)
+    {
+      foreach($results2 as $result2){
+	?>
 </div>
+<div align="center" class="row">
+                    <div class="my-container">
+
+                    	<input type="hidden" name="balance" id="balance" value="<?php echo $result->balance; ?>">
+                        <form action="transfer.php" method="post">
+                        <img src="images/<?php echo $result->profileImage; ?>" class="profile-img img-fluid" style="border-radius: 50%;">
+                        <br>
+                        <div class="form-group">
+                            <span class="name">you are trying to send<?php  echo " NGN". htmlentities($_SESSION['amount']); ?>&nbsp;to <?php  echo htmlentities($result2->fullname); ?></span>
+                        </div>
+                        <div class="form-group">
+                        	<label for="mobile" style="float: left;">Verify your pin</label>
+                            <input type="password" id="pin" name="pin" onkeyup="check_pin()" class="form-control password" placeholder="" >
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" id="btn" name="verify" class="form-control btn green-bg" placeholder="NGN" >
+                        </div>
+
+                        <span id="balance_status" class="status"></span>                        
+                        </form>
+                    </div>
+                    </div>
                     
                 </div>
                 <!-- /page content -->
-
+<?php 
+}
+} 
+ ?>
                 
             </div>
         </div>
+        <!-- <script type="text/javascript">
+            var slider = document.createElement("input");
+slider.type = "range";
+ 
+swal({
+  content: slider,
+});
+
+
+
+        	function check_my_balance(){
+        	var x = document.getElementById('balance').value;
+        	var y = document.getElementById('amount').value;
+        	if (x <= y) {
+        		document.getElementById('balance_status').innerHTML = "<p style='color:red; float:left;'>insufficient fund</p>";
+        		document.getElementById('btn').disabled=true;
+        	}else{
+        		document.getElementById('balance_status').innerHTML = "<p style='color:red; float:left;'></p>";
+        		document.getElementById('btn').disabled=false;
+        	}
+        }
+        </script> -->
         <!-- footer content >
                 <footer class="green-bg">
                     <div class="pull-right " style="color: #fff;">
