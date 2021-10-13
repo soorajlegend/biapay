@@ -1,6 +1,7 @@
 <?php
 include("phpqrcode/qrlib.php");
 include("./dist/include/config.php");
+include("./dist/include/db_con.php");
 session_start();  
 $pass_error="";
 if (isset($_POST['signup'])) {
@@ -24,10 +25,8 @@ if($query1 -> rowCount() == 1)
             $address=sha1($email);
             $file = "qr/".uniqid().".png";
             $sql = "INSERT INTO users (fullname,email,mobile,password,profileImage,myAddress,barcode,status) VALUES ('$fname','$email','$mobile','$password','$image','$address','$file','1')";
-            $query= $dbh -> prepare($sql);
-            $query-> execute();
-            $lastInsertId = $dbh->lastInsertId();
-            if($lastInsertId){
+            if ($con->query($sql) === true) {
+                $lastid = $con->insert_id;
                 $_SESSION['address'] = "$address";
   QRcode::png($address,$file);
                 $pass_error = ' <script>
@@ -42,7 +41,7 @@ swal({
 });
 </script>';
             } else {
-               echo "error for users";
+                echo "error" . $sql . $con->error;
             }
         }
     }
@@ -83,7 +82,7 @@ swal({
                 </li>
             </ul>
     </div>
-    <form action="register.php" method="post">
+    <form action="register.php" method="post" >
     <div class="loginBody">
       <div class="form-group">
         <div class="input-group mb-3">

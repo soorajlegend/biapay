@@ -1,6 +1,7 @@
 <?php 
 include("./dist/include/config.php");
 session_start();
+$pin="";
 if ($_SESSION['address'] == ""){
     header("location:index.php");
 }else{
@@ -13,8 +14,14 @@ if ($_SESSION['address'] == ""){
     {
       foreach($results1 as $result)
 {
+    $pass_error="";
+    if(isset($_POST['add'])){
+        $amt =$_POST['amt'];
+        $_SESSION['amt']="$amt";
+        header("location:btransfer.php");
+    }
  ?>
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -23,7 +30,7 @@ if ($_SESSION['address'] == ""){
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Bia</title>
+        <title>Biapay </title>
 
         <!-- Bootstrap -->
         <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -65,10 +72,18 @@ body{
     background-color: #fff;
 }
 
+    .profile-img{
+        width:20%;
+        border-radius: 50%;
+        margin: 10px;
+    }
 .row{
-    margin-left: 20%;
+    width: 40%;
+    margin-left: 35%;
     margin-right: 20px;
-    margin-top: 5%;
+    margin-top: 2%;
+    padding: 10px 30px;
+    box-shadow: -5px -5px 15px rgba(255, 255, 255, 0.5), 5px 5px 15px rgba(70, 70, 70, 0.12);
 }
 .my-card{
     border: 1.0px solid #ccc;
@@ -79,12 +94,18 @@ body{
     margin-top: 20px;
 }
 @media only screen and (max-width: 600px) {
+    .profile-img{
+        width:50%;
+        border-radius: 50%;
+        margin: 10px;
+    }
     .main-body{
         background-color: white;
         padding: 0px 10px ;
     }
 
     .row{
+        width: 100%;
     margin-left: 0;
     margin-right: 0;
 
@@ -153,11 +174,9 @@ body{
                                         <img src="images/bia.png" alt=""><?php echo htmlentities($result->fullname);?>
                                         <span class=" fa fa-angle-down"></span>
                                     </a>
-                                    
                                     <ul class="dropdown-menu dropdown-usermenu pull-right">
                                         <li><a href="logout.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                     </ul>
-
                                 </li>
                             </ul>
                         </nav>
@@ -171,29 +190,35 @@ body{
                     <div class="clearfix"></div>
                     
                     <!-- Page Header -->
-                    
+                    <div class="alert alert-success green-bg" style="padding: 0px;">
+                        <center><h3 style="">Edit Profile</h3></center>
+                    </div>
                     <!-- /Page Header -->
                     
                     <div align="center" class="row">
-    <div class="my-card">
-      <div class="card-body">
-        <h5 class="card-title">Instant pay</h5>
-        <a href="scanner.php" class="btn green-bg">Transfer</a>
-    </div>
-  </div>
-    <div class="my-card">
-      <div class="card-body">
-        <h5 class="card-title">Get paid instantly</h5>
-        <a href="gscanner.php" class="btn green-bg">Recieve</a>
-      </div>
-    </div>
-    <div class="my-card">
-      <div class="card-body">
-        <h5 class="card-title">Add money from your Bank</h5>
-        <a href="bank.php" class="btn green-bg">Add money</a>
-      </div>
-    </div>
-</div>
+                    <div class="my-container">
+
+                        <form action="bank.php" method="post">
+                        <img src="images/default-avarta.png" class="profile-img img-fluid">
+                        <br>
+                        <div class="form-group">
+                            <input type="tel" name="amt" id="amt" class="form-control" placeholder="Amount">
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" name="cn" id="CNumber" class="form-control" placeholder="Card Number">
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" name="ed" id="Edate" class="form-control" placeholder="Expiry Date">
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" name="cvv" id="cvv" class="form-control" placeholder="CVV">
+                        </div>
+                        <div class="form-group">
+                            <input type="submit" onclick="" name="add" class="form-control btn green-bg" value="Update">
+                        </div>
+                        </form>
+                    </div>
+                    </div>
                     
                 </div>
                 <!-- /page content -->
@@ -201,6 +226,102 @@ body{
                 
             </div>
         </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    function getcredit(){
+
+      var acct = document.getElementById('acct');
+//     var settings = {
+//   "url": "https://fsi.ng/api/sterling/accountapi/api/Spay/InterbankTransferReq?=2PWRP62uUbkFeYSgkxxqRFan6pR22YgJ1634114038",
+//   "method": "POST",
+//   "timeout": 0,
+//   "headers": {
+//     "Sandbox-Key": "3f81b44afa59a7737ffd448d458aef99",
+//     "Ocp-Apim-Subscription-Key": "t",
+//     "Ocp-Apim-Trace": "true",
+//     "Appid": "69",
+//     "Content-Type": "application/json",
+//     "ipval": "0",
+//     "sandbox-key": "2PWRP62uUbkFeYSgkxxqRFan6pR22YgJ1634114038"
+//   },
+//   "data": JSON.stringify({
+//     "Referenceid": "0101",
+//     "RequestType": "01",
+//     "Translocation": "0101",
+//     "SessionID": "01",
+//     "FromAccount": "acct",
+//     "ToAccount": "2209854475",
+//     "Amount": "amt",
+//     "DestinationBankCode": "01",
+//     "NEResponse": "01",
+//     "BenefiName": "01",
+//     "PaymentReference": "01",
+//     "OriginatorAccountName": "01",
+//     "translocation": "01"
+//   }),
+// };
+
+
+// $.ajax(settings).done(function (response) {
+//   console.log(response);
+//   document.getElementById('status').innerHTML = response.data.ResponseText;
+
+// });
+// }
+
+var settings = {
+  "url": "https://fsi.ng/api/eco/corporateapi/merchant/card",
+  "method": "POST",
+  "timeout": 0,
+  "headers": {
+    "Authorization": "Bearer eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJpYW1hdW5pZmllZGRldjEwMyIsImV4cCI6MTU3NjI1MTA0NSwiaWF0IjoxNTc2MjUwOTI1LCJpc3MiOiJjb20uZWNvYmFuay5jb3Jwb3JhdGVhcGkiLCJqdGkiOiI0MDVhMTBiYi0xZGJkLTExZWEtOWY1YS0yZGU5ODMzNjJjMzMifQ.W0FeFszGksdSQFmmYABy1rdRNzzXVTxeoklmp7gyFTlUefixIIez4oY2FPDFdXUsuYF1Djwsjvzqv6kNlxY-jkHdbWPCvvqewSCqcF_0JdmAPGhTLUExY1kv0v3WIw0b0CZm8xULrdEtNhXWPbzxV-gO9LGvSYfEJpKtIURrf3HEY056u4w-MDtCwAuMCoRWzQczzW4niQWdYTzFbpn0MMQNPC_NDDjl4cQZNHNdd4_vu5sL1wlQW8UTYi3LUJOpQ7jjxKGJtXC_GYy-GiEhh-3AcOey26_bbfk5iD9eag0IQpferNpNDMCCjzzW1tg5I7W2zkaisn9-h6gL2S3Vgw",
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+    "Origin": "developer.ecobank.com",
+    "Sandbox-Key": "2PWRP62uUbkFeYSgkxxqRFan6pR22YgJ1634114038"
+  },
+  "data": JSON.stringify({
+    "paymentDetails": {
+      "requestId": "4466",
+      "productCode": "GMT112",
+      "amount": "50035",
+      "currency": "GBP",
+      "locale": "en_AU",
+      "orderInfo": "255s353",
+      "returnUrl": "https://unifiedcallbacks.com/corporateclbkservice/callback/qr"
+    },
+    "merchantDetails": {
+      "accessCode": "79742570",
+      "merchantID": "ETZ001",
+      "secureSecret": "sdsffd"
+    },
+    "secureHash": "7f137705f4caa39dd691e771403430dd23d27aa53cefcb97217927312e77847bca6b8764f487ce5d1f6520fd7227e4d4c470c5d1e7455822c8ee95b10a0e9855"
+  }),
+};
+
+$.ajax(settings).done(function (response) {
+  console.log(response);
+});
+
+// var settings = {
+//   "url": "https://fsi.ng/members/application-details/181/v1/africastalking/version1/messaging",
+//   "method": "POST",
+//   "timeout": 0,
+//   "headers": {
+//     "sandbox-key": "2PWRP62uUbkFeYSgkxxqRFan6pR22YgJ1634114038",
+//     "Content-Type": "application/json"
+//   },
+//   "data": JSON.stringify({
+//     "username": "sandbox",
+//     "to": "+2348120534617",
+//     "message": "testing message"
+//   }),
+// };
+
+// $.ajax(settings).done(function (response) {
+//   console.log(response);
+// });
+  </script>
         <!-- footer content >
                 <footer class="green-bg">
                     <div class="pull-right " style="color: #fff;">
@@ -238,8 +359,4 @@ body{
         <script src="build/js/custom.min.js"></script>
     </body>
 </html>
-<?php 
- } 
- }
- }
-?>
+<?php }}} ?>

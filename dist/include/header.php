@@ -25,7 +25,7 @@
                                     </li>
                                     <li>
                                         <a href="myqr.php">
-                                            <i class="fa fa-address-card"></i>my QR
+                                            <i class="fa fa-barcode"></i>My QR
                                         </a>
                                     </li>
 
@@ -40,13 +40,29 @@
                                         </a>
                                     </li>
                                     <li>
+                                        <a href="mycard.php">
+                                                <i class="fa fa-address-card"></i>My card
+                                        </a>
+                                    </li>
+                                    <li>
                                         <a href="transactions.php">
                                             <i class="fa fa-history"></i>Transactions
+                                        </a>
+                                    </li>
+
+                                    <li>
+                                        <a href="loan.php">
+                                            <i class="fa fa-save"></i>Saving plan
                                         </a>
                                     </li>
                                     <li>
                                         <a href="loan.php">
                                             <i class="fa fa-renren"></i> Loan
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="loan.php">
+                                            <i class="fa fa-language"></i> Language
                                         </a>
                                     </li>
                                     <li>

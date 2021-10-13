@@ -241,7 +241,7 @@ body{
                     <span class="balance"><?php echo htmlentities($result->balance);?><sub>NGN</sub></span>
                     
                     <div class="form-group">
-                    <a href="#" class="btn green-bg form-control">transfer&nbsp;<i class="fa fa-sign-out"></i></a>
+                    <a href="scanner.php" class="btn green-bg form-control">transfer&nbsp;<i class="fa fa-sign-out"></i></a>
                 </div>
                     </div>
                     </div>

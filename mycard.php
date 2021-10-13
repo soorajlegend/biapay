@@ -23,7 +23,7 @@ if ($_SESSION['address'] == ""){
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Bia</title>
+        <title>Fcapt | Admin </title>
 
         <!-- Bootstrap -->
         <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -41,6 +41,9 @@ if ($_SESSION['address'] == ""){
         <!-- bootstrap-daterangepicker -->
         <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
         <!-- Custom Theme Style -->
         <link href="build/css/custom.css" rel="stylesheet">
         <style type="text/css">
@@ -65,26 +68,130 @@ body{
     background-color: #fff;
 }
 
+    .profile-img{
+        width:20%;
+        border-radius: 50%;
+        margin: 10px;
+    }
+    .qr-img{
+        width: 80%;
+    }
 .row{
-    margin-left: 20%;
+    width: 40%;
+    margin-left: 35%;
     margin-right: 20px;
-    margin-top: 5%;
+    margin-top: 10%;
 }
-.my-card{
-    border: 1.0px solid #ccc;
+
+.barcode-card{
+    display: flex;
+    width: 323.52px;
+    height: 204px;
+    border-radius: 9px;
+    transform: scale(1.2);
+    background:#fff;
     padding: 20px 20px;
-    border-radius: 4px;
-    display: block;
-    width: 50%;
-    margin-top: 20px;
+    border: 1.0px solid #ccc;
+    /*background-image: url("images/card-bg5.png");*/
+    background-position: center;
+    background-size: contain;
+    background-attachment: scroll;
 }
+
+.barcode-card::before {
+    content: '';
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    margin-top: ;
+    width: 100%;
+    height: 100%;
+    padding-top: 50px;
+    background: linear-gradient(#009900, #001a00);
+    clip-path: circle(70% at right 150%);
+    border-radius: 9px;
+}
+
+.barcode-card .qr-img{
+    position: absolute;
+    left: 0;
+    margin-left: 10px;
+    width: 100px;
+    height: 100px;
+    display: block;
+}
+.barcode-card .qr-name{
+    position: absolute;
+    left: 0;
+    font-family: 'Orbitron', sans-serif;
+    color: #000;
+    white-space: nowrap;
+    font-size: 13pt;
+    margin-top: 100px;
+    margin-left: 20px;
+    width: 100px;
+    height: 100px;
+}
+.barcode-card .qr-number{
+    position: absolute;
+    left: 0;
+    font-family: 'Orbitron', sans-serif;
+    color: #000;
+    white-space: nowrap;
+    font-size: 10pt;
+    margin-top: 130px;
+    margin-left: 20px;
+    width: 100px;
+    height: 100px;
+}
+.barcode-card .qr-logo{
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-family: 'Orbitron', sans-serif;
+    color: #000;
+    white-space: nowrap;
+    font-size: 10pt;
+    margin-right: 12px;
+    margin-top: 20px;
+    width: 50px;
+    height: 50px;
+}
+.barcode-card .qr-flower{
+    position: absolute;
+    z-index: 2;
+    height: 150px;
+    right: 0;
+    bottom: 0;
+    margin-right: -20px;
+}
+#print{
+    position: relative;
+    margin-top: 50px;
+    width: 323.52px;
+}
+
+
+
+
+
+
+
+
 @media only screen and (max-width: 600px) {
+    .profile-img{
+        width:50%;
+        border-radius: 50%;
+        margin: 10px;
+    }
     .main-body{
         background-color: white;
         padding: 0px 10px ;
     }
 
     .row{
+        width: 100%;
     margin-left: 0;
     margin-right: 0;
 
@@ -147,17 +254,16 @@ body{
                                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
                             </div>
 
+
                             <ul class="nav navbar-nav navbar-right">
                                 <li class="">
                                     <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                                         <img src="images/bia.png" alt=""><?php echo htmlentities($result->fullname);?>
                                         <span class=" fa fa-angle-down"></span>
                                     </a>
-                                    
                                     <ul class="dropdown-menu dropdown-usermenu pull-right">
                                         <li><a href="logout.php"><i class="fa fa-sign-out pull-right"></i> Log Out</a></li>
                                     </ul>
-
                                 </li>
                             </ul>
                         </nav>
@@ -171,29 +277,31 @@ body{
                     <div class="clearfix"></div>
                     
                     <!-- Page Header -->
-                    
+                    <div class="alert alert-success green-bg" style="padding: 0px;">
+                        <center><h3 style="">Edit Profile</h3></center>
+                    </div>
                     <!-- /Page Header -->
                     
                     <div align="center" class="row">
-    <div class="my-card">
-      <div class="card-body">
-        <h5 class="card-title">Instant pay</h5>
-        <a href="scanner.php" class="btn green-bg">Transfer</a>
-    </div>
-  </div>
-    <div class="my-card">
-      <div class="card-body">
-        <h5 class="card-title">Get paid instantly</h5>
-        <a href="gscanner.php" class="btn green-bg">Recieve</a>
-      </div>
-    </div>
-    <div class="my-card">
-      <div class="card-body">
-        <h5 class="card-title">Add money from your Bank</h5>
-        <a href="bank.php" class="btn green-bg">Add money</a>
-      </div>
-    </div>
-</div>
+
+                    <div class="my-container">
+                        <!-- <img src="<?php // echo htmlentities($result->barcode);?>" class="qr-img"> -->
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#00331a" fill-opacity="1" d="M0,64L60,101.3C120,139,240,213,360,218.7C480,224,600,160,720,138.7C840,117,960,139,1080,170.7C1200,203,1320,245,1380,266.7L1440,288L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg> -->
+                            <center>
+                                <div class="barcode-card">
+                                <img src="images/bia.png" class="qr-logo">
+                                <img src="images/card-bg-5.png" class="qr-flower">
+                                <img src="<?php echo htmlentities($result->barcode);?>" class="qr-img">
+                                <h3 class="qr-name"><?php echo htmlentities($result->fullname);?></h3>
+                                <h3 class="qr-number"><?php echo htmlentities($result->mobile);?></h3>
+                                </div>
+                            </center>
+                            <div class="form-group">
+                                <button onclick="window.print()" id="print" class="form-control green-bg">Print&nbsp;<i class="fa fa-print"></i></button>
+                            </div>
+                    </div>
+
+                    </div>
                     
                 </div>
                 <!-- /page content -->
@@ -238,8 +346,4 @@ body{
         <script src="build/js/custom.min.js"></script>
     </body>
 </html>
-<?php 
- } 
- }
- }
-?>
+<?php }}} ?>
